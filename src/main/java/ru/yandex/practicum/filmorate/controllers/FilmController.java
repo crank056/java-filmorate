@@ -13,24 +13,24 @@ import java.util.HashMap;
 @RestController
 @RequestMapping("/films")
 public class FilmController {
-    private HashMap<Integer, Film> films = new HashMap<>();
+    private HashMap<Long, Film> films = new HashMap<>();
     private static final Logger log = LoggerFactory.getLogger(FilmController.class);
 
     @GetMapping
     public HashMap homePage() {
+        log.info("Размер хранилища фильмов:" + String.valueOf(films.size()));
         return films;
     }
 
     @PutMapping
-    public Film refreshFilm(@RequestBody Film film) throws WrongIdException, ValidationException {
+    public Film refreshFilm(@RequestBody Film film) throws ValidationException, WrongIdException {
         log.info("Запрос PUT /films получен");
         if(validationFilm(film)) {
-            Film oldFilm = films.get(film.getId());
-            if (oldFilm.getId() != film.getId()) {
-                log.error("Выброшено исключение WrongIdException");
-                throw new WrongIdException("Id можно изменить только добавив новый фильм!");
-            } else films.put(film.getId(), film);
-            log.info("Размер фильмохранилища после обновления фильма: ", films.size());
+            if(films.containsKey(film.getId())) {
+            log.info("Размер фильмохранилища до обновления фильма: ", films.size());
+            films.put(film.getId(), film);
+            log.info("Размер фильмохранилища после обновления фильма: ", films.size()); }
+            else throw new WrongIdException("Нет фильма с таким id");
             return films.get(film.getId());
         } else {
             log.error("Выброшено исключение ValidationException");
@@ -50,7 +50,6 @@ public class FilmController {
             throw new ValidationException("Неверный формат фильма");
         }
     }
-
 
     private boolean validationFilm(Film film) {
     boolean isValid = true;

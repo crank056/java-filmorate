@@ -13,7 +13,7 @@ import java.util.HashMap;
 @RestController
 @RequestMapping("/users")
 public class UserControlller {
-    private HashMap<Integer, User> users = new HashMap<>();
+    private HashMap<Long, User> users = new HashMap<>();
     private static final Logger log = LoggerFactory.getLogger(UserControlller.class);
 
     @GetMapping
@@ -22,20 +22,16 @@ public class UserControlller {
     }
 
     @PutMapping
-    public User refreshUser(@RequestBody User user) throws WrongIdException, ValidationException {
+    public User refreshUser(@RequestBody User user) throws ValidationException, WrongIdException {
         log.info("Запрос PUT /users получен");
-        if(validationUser(user)) {
-            User oldUser = users.get(user.getId());
-            if (oldUser.getId() != user.getId()) {
-                log.error("Выброшено исключение WrongIdException");
-                throw new WrongIdException("Id можно изменить только создав нового пользователя!");
-            } else {
-                if(user.getName() == "") user.setName(user.getLogin());
-                log.info(user.getName());
-                log.info("Размер хранилища аккаунтов до обновления:" + users.size());
-                users.put(user.getId(), user);
-                log.info("Размер хранилища аккаунтов после обновления:" + users.size());
-            }
+        if (validationUser(user)) {
+            if (user.getName() == "") user.setName(user.getLogin());
+            log.info(user.getName());
+            log.info("Размер хранилища аккаунтов до обновления:" + users.size());
+            if(users.containsKey(user.getId())) {
+            users.put(user.getId(), user);
+            log.info("Размер хранилища аккаунтов после обновления:" + users.size()); }
+            else throw new WrongIdException("Нет пользователя с таким id");
             return users.get(user.getId());
         } else {
             log.error("Выброшено исключение ValidationException");
@@ -48,7 +44,7 @@ public class UserControlller {
         log.info("Запрос POST /users получен");
         if (validationUser(user)) {
             log.info("Размер хранилища аккаунтов до добавления:" + users.size());
-            if(user.getName() == "") user.setName(user.getLogin());
+            if (user.getName() == "") user.setName(user.getLogin());
             users.put(user.getId(), user);
             log.info("Размер хранилища аккаунтов после добавления:" + users.size());
             return users.get(user.getId());
@@ -60,15 +56,15 @@ public class UserControlller {
 
     private boolean validationUser(User user) {
         boolean isValid = true;
-        if(user.getEmail().isBlank() || !user.getEmail().contains("@")){
+        if (user.getEmail().isBlank() || !user.getEmail().contains("@")) {
             isValid = false;
             log.info("Неверный формат Email");
         }
-        if(user.getLogin().isBlank() || user.getLogin().contains(" ")) {
+        if (user.getLogin().isBlank() || user.getLogin().contains(" ")) {
             isValid = false;
             log.info("Неверный формат логина");
         }
-        if(user.getBirthday().isAfter(LocalDate.now())) {
+        if (user.getBirthday().isAfter(LocalDate.now())) {
             isValid = false;
             log.info("Неверная дата рождения");
         }
