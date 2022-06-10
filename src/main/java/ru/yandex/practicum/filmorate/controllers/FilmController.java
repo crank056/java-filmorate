@@ -8,6 +8,7 @@ import ru.yandex.practicum.filmorate.exceptions.WrongIdException;
 import ru.yandex.practicum.filmorate.model.Film;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 @RestController
@@ -17,9 +18,12 @@ public class FilmController {
     private static final Logger log = LoggerFactory.getLogger(FilmController.class);
 
     @GetMapping
-    public HashMap homePage() {
-        log.info("Размер хранилища фильмов:" + String.valueOf(films.size()));
-        return films;
+    public ArrayList getAllFilms() {
+        ArrayList<Film> filmsList = new ArrayList<>();
+        for(Film film: films.values()) {
+            filmsList.add(film);
+        }
+        return filmsList;
     }
 
     @PutMapping

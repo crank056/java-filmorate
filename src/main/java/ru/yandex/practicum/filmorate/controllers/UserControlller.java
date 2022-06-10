@@ -8,6 +8,7 @@ import ru.yandex.practicum.filmorate.exceptions.WrongIdException;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 @RestController
@@ -17,8 +18,12 @@ public class UserControlller {
     private static final Logger log = LoggerFactory.getLogger(UserControlller.class);
 
     @GetMapping
-    public HashMap getAllUsers() {
-        return users;
+    public ArrayList getAllUsers() {
+        ArrayList usersList = new ArrayList();
+        for(User user : users.values()) {
+            usersList.add(user);
+        }
+        return usersList;
     }
 
     @PutMapping
