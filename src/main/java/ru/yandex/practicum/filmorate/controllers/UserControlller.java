@@ -20,7 +20,7 @@ public class UserControlller {
     @GetMapping
     public ArrayList getAllUsers() {
         ArrayList usersList = new ArrayList();
-        for(User user : users.values()) {
+        for (User user : users.values()) {
             usersList.add(user);
         }
         return usersList;
@@ -33,10 +33,13 @@ public class UserControlller {
             if (user.getName() == "") user.setName(user.getLogin());
             log.info(user.getName());
             log.info("Размер хранилища аккаунтов до обновления:" + users.size());
-            if(users.containsKey(user.getId())) {
-            users.put(user.getId(), user);
-            log.info("Размер хранилища аккаунтов после обновления:" + users.size()); }
-            else throw new WrongIdException("Нет пользователя с таким id");
+            if (users.containsKey(user.getId())) {
+                users.put(user.getId(), user);
+                log.info("Размер хранилища аккаунтов после обновления:" + users.size());
+            } else {
+                log.error("Выброшено исключение WrongIdException");
+                throw new WrongIdException("Нет пользователя с таким id");
+            }
             return users.get(user.getId());
         } else {
             log.error("Выброшено исключение ValidationException");

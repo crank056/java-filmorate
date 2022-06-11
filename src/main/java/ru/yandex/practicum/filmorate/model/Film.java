@@ -3,7 +3,6 @@ package ru.yandex.practicum.filmorate.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
-import javax.validation.constraints.*;
 import java.time.LocalDate;
 
 @Data
@@ -16,7 +15,7 @@ public class Film {
     private long lastUsedId = 1;
 
     public Film(@JsonProperty("id") long id,
-            @JsonProperty("name") String name,
+                @JsonProperty("name") String name,
                 @JsonProperty("descriprion") String description,
                 @JsonProperty("releaseDate") LocalDate releaseDate,
                 @JsonProperty("duration") Integer duration) {
@@ -32,4 +31,5 @@ public class Film {
     private long getNextId() {
         return lastUsedId++;
     }
+
 }
