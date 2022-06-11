@@ -9,8 +9,8 @@ import ru.yandex.practicum.filmorate.model.Film;
 import java.time.LocalDate;
 
 public class FilmControllerTest {
-    FilmController controller;
-    Film film;
+    private FilmController controller;
+    private Film film;
 
     @BeforeEach
     public void setController() {
@@ -58,8 +58,4 @@ public class FilmControllerTest {
         film.setDuration(1);
         assertTrue(controller.validationFilm(film));
     }
-
-
-
-
 }

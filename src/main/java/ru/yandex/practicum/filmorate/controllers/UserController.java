@@ -13,9 +13,9 @@ import java.util.HashMap;
 
 @RestController
 @RequestMapping("/users")
-public class UserControlller {
+public class UserController {
     private HashMap<Long, User> users = new HashMap<>();
-    private static final Logger log = LoggerFactory.getLogger(UserControlller.class);
+    private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
     @GetMapping
     public ArrayList getAllUsers() {
@@ -62,7 +62,7 @@ public class UserControlller {
         }
     }
 
-    private boolean validationUser(User user) {
+    public boolean validationUser(User user) {
         boolean isValid = true;
         if (user.getEmail().isBlank() || !user.getEmail().contains("@")) {
             isValid = false;

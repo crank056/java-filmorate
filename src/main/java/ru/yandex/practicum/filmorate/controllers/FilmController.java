@@ -20,7 +20,7 @@ public class FilmController {
     @GetMapping
     public ArrayList getAllFilms() {
         ArrayList<Film> filmsList = new ArrayList<>();
-        for(Film film: films.values()) {
+        for (Film film : films.values()) {
             filmsList.add(film);
         }
         return filmsList;
@@ -29,12 +29,13 @@ public class FilmController {
     @PutMapping
     public Film refreshFilm(@RequestBody Film film) throws ValidationException, WrongIdException {
         log.info("Запрос PUT /films получен");
-        if(validationFilm(film)) {
-            if(films.containsKey(film.getId())) {
+        if (validationFilm(film)) {
+            if (films.containsKey(film.getId())) {
                 log.info("Размер фильмохранилища до обновления фильма: ", films.size());
                 films.put(film.getId(), film);
-                log.info("Размер фильмохранилища после обновления фильма: ", films.size()); }
-            else { log.error("Выброшено исключение WrongIdException");
+                log.info("Размер фильмохранилища после обновления фильма: ", films.size());
+            } else {
+                log.error("Выброшено исключение WrongIdException");
                 throw new WrongIdException("Нет фильма с таким id");
             }
             return films.get(film.getId());
@@ -59,20 +60,20 @@ public class FilmController {
 
     public boolean validationFilm(Film film) {
         boolean isValid = true;
-        if(film.getName() == null || film.getName().isBlank()) {
+        if (film.getName() == null || film.getName().isBlank()) {
             isValid = false;
             log.info("Имя не существует или пустое");
         }
-        if(film.getDescription().length() > 200) {
+        if (film.getDescription().length() > 200) {
             isValid = false;
             log.info("Размер описания превышает 200 символов");
         }
-        LocalDate birthdayOfCinema = LocalDate.of(1895, 12 ,28);
-        if(film.getReleaseDate().isBefore(birthdayOfCinema)) {
+        LocalDate birthdayOfCinema = LocalDate.of(1895, 12, 28);
+        if (film.getReleaseDate().isBefore(birthdayOfCinema)) {
             isValid = false;
             log.info("Дата релиза раньше даты рождения первого фильма в истории!");
         }
-        if(film.getDuration() <= 0) {
+        if (film.getDuration() <= 0) {
             isValid = false;
             log.info("Продолжительность равна или меньше нуля");
         }
