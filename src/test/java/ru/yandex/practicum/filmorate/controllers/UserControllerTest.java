@@ -6,57 +6,54 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.filmorate.model.User;
 
-
 import java.time.LocalDate;
 
 public class UserControllerTest {
-    private UserController controller;
     private User user;
 
     @BeforeEach
     void setController() {
-        controller = new UserController();
         user = new User(0, "email@mail.ru", "testLogin", "TestName",
                 LocalDate.of(2000, 12, 31));
     }
 
     @Test
     void emailValidationTest() {
-        assertTrue(controller.validationUser(user));
+        assertTrue(user.isValid());
         user.setEmail("");
-        assertFalse(controller.validationUser(user));
+        assertFalse(user.isValid());
         user.setEmail("@");
-        assertTrue(controller.validationUser(user));
+        assertTrue(user.isValid());
         user.setEmail("test");
-        assertFalse(controller.validationUser(user));
+        assertFalse(user.isValid());
     }
 
     @Test
     void loginValidationTest() {
-        assertTrue(controller.validationUser(user));
+        assertTrue(user.isValid());
         user.setLogin("");
-        assertFalse(controller.validationUser(user));
+        assertFalse(user.isValid());
         user.setLogin("test");
-        assertTrue(controller.validationUser(user));
+        assertTrue(user.isValid());
         user.setLogin("te st");
-        assertFalse(controller.validationUser(user));
+        assertFalse(user.isValid());
     }
 
     @Test
     void nameValidationTest() {
-        assertTrue(controller.validationUser(user));
+        assertTrue(user.isValid());
         user.setName("");
-        assertTrue(controller.validationUser(user));
+        assertTrue(user.isValid());
     }
 
     @Test
     void birtdayValidationTest() {
-        assertTrue(controller.validationUser(user));
+        assertTrue(user.isValid());
         user.setBirthday(LocalDate.now().plusDays(1));
-        assertFalse(controller.validationUser(user));
+        assertFalse(user.isValid());
         user.setBirthday(LocalDate.now());
-        assertTrue(controller.validationUser(user));
+        assertTrue(user.isValid());
         user.setBirthday(LocalDate.of(2050, 12, 31));
-        assertFalse(controller.validationUser(user));
+        assertFalse(user.isValid());
     }
 }

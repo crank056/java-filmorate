@@ -9,53 +9,51 @@ import ru.yandex.practicum.filmorate.model.Film;
 import java.time.LocalDate;
 
 public class FilmControllerTest {
-    private FilmController controller;
     private Film film;
 
     @BeforeEach
     public void setController() {
-        controller = new FilmController();
         film = new Film(0, "TestFilm", "TestFilmDescription",
                 LocalDate.of(2020, 12, 30), 150);
     }
 
     @Test
-    void ValidationNameTest() {
-        assertTrue(controller.validationFilm(film));
+    void validateNameTest() {
+        assertTrue(film.isValid());
         film.setName("");
-        assertFalse(controller.validationFilm(film));
+        assertFalse(film.isValid());
     }
 
     @Test
-    void ValidationDescriptionTest() {
-        assertTrue(controller.validationFilm(film));
+    void validateDescriptionTest() {
+        assertTrue(film.isValid());
         film.setDescription("TestFilmDescriptionTestFilmDescriptionTestFilmDescriptionTestFilmDescription" +
                 "TestFilmDescriptionTestFilmDescriptionTestFilmDescriptionTestFilmDescriptionTestFilmDescription" +
                 "TestFilmDescriptionTestFilmDescriptionTestFilmDescriptionTestFilmDescriptionTestFilmDescription");
-        assertFalse(controller.validationFilm(film));
+        assertFalse(film.isValid());
         film.setDescription("TestFilmDescriptionTestFilmDescriptionTestFilmDescriptionTestFilmDescription" +
                 "TestFilmDescriptionTestFilmDescriptionTestFilmDescriptionTestFilmDescriptionTestFilmDescription" +
                 "TestFilmDescriptionTestFilmDe");
-        assertTrue(controller.validationFilm(film));
+        assertTrue(film.isValid());
     }
 
     @Test
-    void ValidationDateTest() {
-        assertTrue(controller.validationFilm(film));
+    void validateDateTest() {
+        assertTrue(film.isValid());
         film.setReleaseDate(LocalDate.of(1850, 12, 30));
-        assertFalse(controller.validationFilm(film));
+        assertFalse(film.isValid());
         film.setReleaseDate(LocalDate.of(1895, 12, 28));
-        assertTrue(controller.validationFilm(film));
+        assertTrue(film.isValid());
     }
 
     @Test
-    void ValidationDurationTest() {
-        assertTrue(controller.validationFilm(film));
+    void validateDurationTest() {
+        assertTrue(film.isValid());
         film.setDuration(-1);
-        assertFalse(controller.validationFilm(film));
+        assertFalse(film.isValid());
         film.setDuration(0);
-        assertFalse(controller.validationFilm(film));
+        assertFalse(film.isValid());
         film.setDuration(1);
-        assertTrue(controller.validationFilm(film));
+        assertTrue(film.isValid());
     }
 }

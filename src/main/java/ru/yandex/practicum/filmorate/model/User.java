@@ -2,9 +2,11 @@ package ru.yandex.practicum.filmorate.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDate;
 
+@Slf4j
 @Data
 public class User {
     private long id;
@@ -13,6 +15,7 @@ public class User {
     private String name;
     private LocalDate birthday;
     private static long lastUsedId = 1;
+    private boolean isValid;
 
     public User(@JsonProperty("id") long id,
                 @JsonProperty("email") String email,
@@ -28,7 +31,28 @@ public class User {
         this.birthday = birthday;
     }
 
+    public boolean isValid() {
+        return validate();
+    }
+
     private long getNextId() {
         return lastUsedId++;
+    }
+
+    private boolean validate() {
+        boolean isValid = true;
+        if (email.isBlank() || !email.contains("@")) {
+            isValid = false;
+            log.info("Неверный формат Email");
+        }
+        if (login.isBlank() || login.contains(" ")) {
+            isValid = false;
+            log.info("Неверный формат логина");
+        }
+        if (birthday.isAfter(LocalDate.now())) {
+            isValid = false;
+            log.info("Неверная дата рождения");
+        }
+        return isValid;
     }
 }
