@@ -32,14 +32,6 @@ public class User {
     }
 
     public boolean isValid() {
-        return validate();
-    }
-
-    private long getNextId() {
-        return lastUsedId++;
-    }
-
-    private boolean validate() {
         boolean isValid = true;
         if (email.isBlank() || !email.contains("@")) {
             isValid = false;
@@ -54,5 +46,9 @@ public class User {
             log.info("Неверная дата рождения");
         }
         return isValid;
+    }
+
+    private long getNextId() {
+        return lastUsedId++;
     }
 }

@@ -16,31 +16,8 @@ public class Film {
     private Integer duration;
     private long lastUsedId = 1;
     private final LocalDate BIRTHDAY_OF_CINEMA = LocalDate.of(1895, 12, 28);
-    private boolean isValid;
 
     public boolean isValid() {
-        return validate();
-    }
-
-    public Film(@JsonProperty("id") long id,
-                @JsonProperty("name") String name,
-                @JsonProperty("descriprion") String description,
-                @JsonProperty("releaseDate") LocalDate releaseDate,
-                @JsonProperty("duration") Integer duration) {
-        if (id != 0) {
-            this.id = id;
-        } else this.id = getNextId();
-        this.name = name;
-        this.description = description;
-        this.releaseDate = releaseDate;
-        this.duration = duration;
-    }
-
-    private long getNextId() {
-        return lastUsedId++;
-    }
-
-    private boolean validate() {
         boolean isValid = true;
         if (name == null || name.isBlank()) {
             isValid = false;
@@ -59,5 +36,23 @@ public class Film {
             log.info("Продолжительность равна или меньше нуля");
         }
         return isValid;
+    }
+
+    public Film(@JsonProperty("id") long id,
+                @JsonProperty("name") String name,
+                @JsonProperty("descriprion") String description,
+                @JsonProperty("releaseDate") LocalDate releaseDate,
+                @JsonProperty("duration") Integer duration) {
+        if (id != 0) {
+            this.id = id;
+        } else this.id = getNextId();
+        this.name = name;
+        this.description = description;
+        this.releaseDate = releaseDate;
+        this.duration = duration;
+    }
+
+    private long getNextId() {
+        return lastUsedId++;
     }
 }
