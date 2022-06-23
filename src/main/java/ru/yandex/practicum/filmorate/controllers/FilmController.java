@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.exceptions.WrongIdException;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.service.FilmService;
 import ru.yandex.practicum.filmorate.storage.film.InMemoryFilmStorage;
 
 import java.util.ArrayList;
@@ -16,15 +17,16 @@ import java.util.HashMap;
 @RequestMapping("/films")
 public class FilmController {
     InMemoryFilmStorage inMemoryFilmStorage;
+    FilmService filmService;
 
     @Autowired
-    public FilmController(InMemoryFilmStorage inMemoryFilmStorage) {
+    public FilmController(InMemoryFilmStorage inMemoryFilmStorage, FilmService filmService) {
         this.inMemoryFilmStorage = inMemoryFilmStorage;
+        this.filmService = filmService;
     }
 
-
     @GetMapping
-    public ArrayList getAllFilms() {
+    public HashMap<Long, Film> getAllFilms() {
     return inMemoryFilmStorage.getAllFilms();
     }
 

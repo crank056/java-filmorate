@@ -3,6 +3,7 @@ package ru.yandex.practicum.filmorate.storage.film;
 import ru.yandex.practicum.filmorate.model.Film;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public interface FilmStorage {
 
@@ -12,6 +13,6 @@ public interface FilmStorage {
 
     Film filmRefresh(Film film);
 
-    ArrayList getAllFilms();
+    HashMap<Long, Film> getAllFilms();
 
 }

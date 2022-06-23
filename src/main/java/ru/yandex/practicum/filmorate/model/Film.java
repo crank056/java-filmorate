@@ -5,10 +5,12 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDate;
+import java.util.Comparator;
+import java.util.Set;
 
 @Slf4j
 @Data
-public class Film {
+public class Film implements Comparable<Film>{
     private long id;
     private String name;
     private String description;
@@ -16,6 +18,16 @@ public class Film {
     private Integer duration;
     private long lastUsedId = 1;
     private final LocalDate BIRTHDAY_OF_CINEMA = LocalDate.of(1895, 12, 28);
+
+    public Set<Long> getLikes() {
+        return likes;
+    }
+
+    public void setLikes(Set<Long> likes) {
+        this.likes = likes;
+    }
+
+    private Set<Long> likes;
 
     public boolean isValid() {
         boolean isValid = true;
@@ -54,5 +66,10 @@ public class Film {
 
     private long getNextId() {
         return lastUsedId++;
+    }
+
+    @Override
+    public int compareTo(Film o) {
+        return Long.compare(this.likes.size(), o.likes.size());
     }
 }

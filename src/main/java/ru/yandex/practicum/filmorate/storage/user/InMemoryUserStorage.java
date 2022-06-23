@@ -61,11 +61,7 @@ public class InMemoryUserStorage implements UserStorage{
     }
 
     @Override
-    public ArrayList getAllUsers() {
-        ArrayList usersList = new ArrayList();
-        for (User user : users.values()) {
-            usersList.add(user);
-        }
-        return usersList;
+    public HashMap<Long, User> getAllUsers() {
+        return users;
     }
 }
