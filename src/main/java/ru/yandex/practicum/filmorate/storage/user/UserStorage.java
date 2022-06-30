@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.storage.user;
 
+import ru.yandex.practicum.filmorate.exceptions.WrongIdException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
 
@@ -15,6 +16,8 @@ public interface UserStorage {
     User userRefresh(User user);
 
     HashMap<Long, User> getAllUsers();
+
+    User getUserFromId(long id) throws WrongIdException;
 
 
 }

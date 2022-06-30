@@ -14,6 +14,7 @@ import java.util.HashMap;
 @Component
 public class InMemoryFilmStorage implements FilmStorage{
     private HashMap<Long, Film> films = new HashMap<>();
+    private static long lastUsedId = 1;
 
     @SneakyThrows
     @Override
@@ -51,6 +52,7 @@ public class InMemoryFilmStorage implements FilmStorage{
     @Override
     public Film filmAdd(Film film) {
         if (film.isValid()) {
+            film.setId(getNextId());
             films.put(film.getId(), film);
             log.info("Размер фильмохранилища после добавления: {}", films.size());
             return films.get(film.getId());
@@ -58,5 +60,16 @@ public class InMemoryFilmStorage implements FilmStorage{
             log.error("Выброшено исключение ValidationException");
             throw new ValidationException("Неверный формат фильма");
         }
+    }
+
+    @Override
+    public Film getFilmFromId(long id) throws WrongIdException {
+        if(films.containsKey(id)) {
+        return films.get(id);}
+        else throw new WrongIdException("Неверный id");
+    }
+
+    private long getNextId() {
+            return lastUsedId++;
     }
 }

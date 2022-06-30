@@ -15,11 +15,13 @@ import java.util.HashMap;
 @Component
 public class InMemoryUserStorage implements UserStorage{
     private HashMap<Long, User> users = new HashMap<>();
+    private static long lastUsedId = 1;
 
     @SneakyThrows
     @Override
     public User userAdd(User user) {
         if (user.isValid()) {
+            user.setId(getNextId());
             log.info("Размер хранилища аккаунтов до добавления: {}", users.size());
             if (user.getName() == "") user.setName(user.getLogin());
             users.put(user.getId(), user);
@@ -63,5 +65,15 @@ public class InMemoryUserStorage implements UserStorage{
     @Override
     public HashMap<Long, User> getAllUsers() {
         return users;
+    }
+
+    @Override
+    public User getUserFromId(long id) throws WrongIdException {
+        if(id < 0) throw new WrongIdException("Id меньше 0");
+        return users.get(id);
+    }
+
+    private long getNextId() {
+        return lastUsedId++;
     }
 }
