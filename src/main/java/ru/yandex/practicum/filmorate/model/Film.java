@@ -10,7 +10,7 @@ import java.util.TreeSet;
 
 @Slf4j
 @Data
-public class Film implements Comparable<Film>{
+public class Film implements Comparable<Film> {
     private String name;
     private String description;
     private LocalDate releaseDate;
@@ -72,13 +72,13 @@ public class Film implements Comparable<Film>{
     @Override
     public int compareTo(Film o) {
         int result = 0;
-        if(this.likes.size() > 0 && o.likes.size() > 0) {
+        if (this.likes.size() > 0 && o.likes.size() > 0) {
             result = Long.compare(this.likes.size(), o.likes.size());
-        } else if(this.likes.size() == 0 && o.likes.size() > 0) {
+        } else if (this.likes.size() == 0 && o.likes.size() > 0) {
             result = -1;
-        } else if(this.likes.size() > 0 && o.likes.size() ==0) {
+        } else if (this.likes.size() > 0 && o.likes.size() == 0) {
             result = 1;
-        } else if(this.likes.size() == 0 && o.likes.size() == 0) {
+        } else if (this.likes.size() == 0 && o.likes.size() == 0) {
             result = -1;
         }
         return result;

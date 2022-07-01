@@ -19,7 +19,7 @@ public class UserService {
     }
 
     public boolean addFriend(long userId, long friendId) throws WrongIdException {
-        if(userStorage.getAllUsers().get(userId) != null && userStorage.getAllUsers().get(friendId) != null) {
+        if (userStorage.getAllUsers().get(userId) != null && userStorage.getAllUsers().get(friendId) != null) {
             userStorage.getAllUsers().get(userId).getFriends().add(friendId);
             userStorage.getAllUsers().get(friendId).getFriends().add(userId);
         } else throw new WrongIdException("Неверный id пользователя или друга");
@@ -27,7 +27,7 @@ public class UserService {
     }
 
     public boolean deleteFriend(long userId, long friendId) throws WrongIdException {
-        if(userStorage.getAllUsers().get(userId).getFriends().contains(friendId)) {
+        if (userStorage.getAllUsers().get(userId).getFriends().contains(friendId)) {
             userStorage.getAllUsers().get(userId).getFriends().remove(friendId);
             userStorage.getAllUsers().get(friendId).getFriends().remove(userId);
         } else throw new WrongIdException("Нет такого друга или неверный id");
@@ -36,7 +36,7 @@ public class UserService {
 
     public ArrayList<User> getFriendsList(long userId) throws WrongIdException {
         ArrayList<User> friends = new ArrayList<>();
-        if(userStorage.getAllUsers().get(userId) != null) {
+        if (userStorage.getAllUsers().get(userId) != null) {
             for (Long frienId : userStorage.getAllUsers().get(userId).getFriends()) {
                 friends.add(userStorage.getAllUsers().get(frienId));
             }
@@ -46,7 +46,7 @@ public class UserService {
 
     public ArrayList<User> showCommonFriends(long userId, long userForComparison) throws WrongIdException {
         ArrayList<User> commonFriends = new ArrayList<>();
-        if(userStorage.getAllUsers().get(userId) != null && userStorage.getAllUsers().get(userForComparison) != null) {
+        if (userStorage.getAllUsers().get(userId) != null && userStorage.getAllUsers().get(userForComparison) != null) {
             Set<Long> userFriend = userStorage.getAllUsers().get(userId).getFriends();
             Set<Long> userForComparisonFriend = userStorage.getAllUsers().get(userForComparison).getFriends();
             for (Long id : userFriend) {

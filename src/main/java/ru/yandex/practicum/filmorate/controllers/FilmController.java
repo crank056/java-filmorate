@@ -10,9 +10,7 @@ import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
 import ru.yandex.practicum.filmorate.storage.film.InMemoryFilmStorage;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
@@ -90,6 +88,5 @@ public class FilmController {
     public Map<String, String> handleRuntimeException(final RuntimeException e) {
         return Map.of("Возникло исключение", e.getMessage());
     }
-
 }
 

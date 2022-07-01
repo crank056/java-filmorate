@@ -5,15 +5,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.exceptions.WrongIdException;
-import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 @Slf4j
 @Component
-public class InMemoryUserStorage implements UserStorage{
+public class InMemoryUserStorage implements UserStorage {
     private HashMap<Long, User> users = new HashMap<>();
     private static long lastUsedId = 1;
 
@@ -36,7 +34,7 @@ public class InMemoryUserStorage implements UserStorage{
     @Override
     public boolean userDelete(User user) {
         boolean isDone = true;
-        if(users.containsValue(user)) users.remove(user.getId());
+        if (users.containsValue(user)) users.remove(user.getId());
         else isDone = false;
         return isDone;
     }
@@ -69,7 +67,7 @@ public class InMemoryUserStorage implements UserStorage{
 
     @Override
     public User getUserFromId(long id) throws WrongIdException {
-        if(id < 0) throw new WrongIdException("Id меньше 0");
+        if (id < 0) throw new WrongIdException("Id меньше 0");
         return users.get(id);
     }
 

@@ -86,11 +86,6 @@ public class UserController {
     public Map<String, String> handleRuntimeException(final RuntimeException e) {
         return Map.of("Возникло исключение", e.getMessage());
     }
-
-
-
-
-
 }
 
 

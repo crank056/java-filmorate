@@ -7,12 +7,11 @@ import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.exceptions.WrongIdException;
 import ru.yandex.practicum.filmorate.model.Film;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 @Slf4j
 @Component
-public class InMemoryFilmStorage implements FilmStorage{
+public class InMemoryFilmStorage implements FilmStorage {
     private HashMap<Long, Film> films = new HashMap<>();
     private static long lastUsedId = 1;
 
@@ -43,7 +42,7 @@ public class InMemoryFilmStorage implements FilmStorage{
     @Override
     public boolean filmDelete(Film film) {
         boolean isDone = true;
-        if(films.containsValue(film)) films.remove(film.getId());
+        if (films.containsValue(film)) films.remove(film.getId());
         else isDone = false;
         return isDone;
     }
@@ -64,12 +63,12 @@ public class InMemoryFilmStorage implements FilmStorage{
 
     @Override
     public Film getFilmFromId(long id) throws WrongIdException {
-        if(films.containsKey(id)) {
-        return films.get(id);}
-        else throw new WrongIdException("Неверный id");
+        if (films.containsKey(id)) {
+            return films.get(id);
+        } else throw new WrongIdException("Неверный id");
     }
 
     private long getNextId() {
-            return lastUsedId++;
+        return lastUsedId++;
     }
 }
