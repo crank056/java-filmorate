@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDate;
+import java.util.Set;
+import java.util.TreeSet;
 
 @Slf4j
 @Data
@@ -14,17 +16,20 @@ public class User {
     private String login;
     private String name;
     private LocalDate birthday;
-    private static long lastUsedId = 1;
-    private boolean isValid;
+    private Set<Long> friends = new TreeSet<>();
 
-    public User(@JsonProperty("id") long id,
-                @JsonProperty("email") String email,
+    public void setFriends(Set<Long> friends) {
+        this.friends = friends;
+    }
+
+    public Set<Long> getFriends() {
+        return friends;
+    }
+
+    public User(@JsonProperty("email") String email,
                 @JsonProperty("login") String login,
                 @JsonProperty("name") String name,
                 @JsonProperty("birthday") LocalDate birthday) {
-        if (id != 0) {
-            this.id = id;
-        } else this.id = getNextId();
         this.email = email;
         this.login = login;
         this.name = name;
@@ -48,7 +53,11 @@ public class User {
         return isValid;
     }
 
-    private long getNextId() {
-        return lastUsedId++;
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }

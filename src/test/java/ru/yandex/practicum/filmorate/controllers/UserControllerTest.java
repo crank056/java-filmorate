@@ -13,7 +13,7 @@ public class UserControllerTest {
 
     @BeforeEach
     void setController() {
-        user = new User(0, "email@mail.ru", "testLogin", "TestName",
+        user = new User( "email@mail.ru", "testLogin", "TestName",
                 LocalDate.of(2000, 12, 31));
     }
 

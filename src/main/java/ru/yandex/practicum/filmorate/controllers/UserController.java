@@ -1,63 +1,91 @@
 package ru.yandex.practicum.filmorate.controllers;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.exceptions.WrongIdException;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.service.UserService;
+import ru.yandex.practicum.filmorate.storage.user.InMemoryUserStorage;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 @RestController
 @RequestMapping("/users")
 public class UserController {
-    private HashMap<Long, User> users = new HashMap<>();
+    private InMemoryUserStorage inMemoryUserStorage;
+    private UserService userService;
+
+    public UserController(InMemoryUserStorage inMemoryUserStorage, UserService userService) {
+        this.inMemoryUserStorage = inMemoryUserStorage;
+        this.userService = userService;
+    }
 
     @GetMapping
-    public ArrayList getAllUsers() {
-        ArrayList usersList = new ArrayList();
-        for (User user : users.values()) {
-            usersList.add(user);
-        }
-        return usersList;
+    public ArrayList<User> getAllUsers() {
+        ArrayList<User> users = new ArrayList<>();
+        users.addAll(inMemoryUserStorage.getAllUsers().values());
+        return users;
     }
 
     @PutMapping
     public User refreshUser(@RequestBody User user) throws ValidationException, WrongIdException {
         log.info("Запрос PUT /users получен");
-        if (user.isValid()) {
-            if (user.getName() == "") user.setName(user.getLogin());
-            log.info(user.getName());
-            log.info("Размер хранилища аккаунтов до обновления: {}", users.size());
-            if (users.containsKey(user.getId())) {
-                users.put(user.getId(), user);
-                log.info("Размер хранилища аккаунтов после обновления: {}", users.size());
-            } else {
-                log.error("Выброшено исключение WrongIdException");
-                throw new WrongIdException("Нет пользователя с таким id");
-            }
-            return users.get(user.getId());
-        } else {
-            log.error("Выброшено исключение ValidationException");
-            throw new ValidationException("Неверный формат пользователя!");
-        }
+        return inMemoryUserStorage.userRefresh(user);
     }
 
     @PostMapping
     public User createUser(@RequestBody User user) throws ValidationException {
         log.info("Запрос POST /users получен");
-        if (user.isValid()) {
-            log.info("Размер хранилища аккаунтов до добавления: {}", users.size());
-            if (user.getName() == "") user.setName(user.getLogin());
-            users.put(user.getId(), user);
-            log.info("Размер хранилища аккаунтов после добавления: {}", users.size());
-            return users.get(user.getId());
-        } else {
-            log.error("Выброшено исключение ValidationException");
-            throw new ValidationException("Неверный формат юзера!");
-        }
+        return inMemoryUserStorage.userAdd(user);
+    }
+
+    @GetMapping("/{id}")
+    public User getUserFromId(@PathVariable long id) throws WrongIdException {
+        log.info("Запрос GET /users/{id} получен: {}", id);
+        return inMemoryUserStorage.getUserFromId(id);
+    }
+
+    @PutMapping("/{id}/friends/{friendId}")
+    public boolean addFriend(@PathVariable long id, @PathVariable long friendId) throws WrongIdException {
+        return userService.addFriend(id, friendId);
+    }
+
+    @DeleteMapping("/{id}/friends/{friendId}")
+    public boolean deleteFriend(@PathVariable long id, @PathVariable long friendId) throws WrongIdException {
+        return userService.deleteFriend(id, friendId);
+    }
+
+    @GetMapping("/{id}/friends")
+    public ArrayList<User> getFriends(@PathVariable long id) throws WrongIdException {
+        return userService.getFriendsList(id);
+    }
+
+    @GetMapping("/{id}/friends/common/{otherId}")
+    public ArrayList<User> getCommonFriends(@PathVariable long id, @PathVariable long otherId) throws WrongIdException {
+        return userService.showCommonFriends(id, otherId);
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Map<String, String> handleValidationException(final ValidationException e) {
+        return Map.of("Объект не прошел валидацию", e.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Map<String, String> handleWrongIdException(final WrongIdException e) {
+        return Map.of("Объект с таким Id не найден", e.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public Map<String, String> handleRuntimeException(final RuntimeException e) {
+        return Map.of("Возникло исключение", e.getMessage());
     }
 }
+
 
