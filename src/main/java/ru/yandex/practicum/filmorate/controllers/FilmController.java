@@ -17,8 +17,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/films")
 public class FilmController {
-    InMemoryFilmStorage inMemoryFilmStorage;
-    FilmService filmService;
+    private InMemoryFilmStorage inMemoryFilmStorage;
+    private FilmService filmService;
 
     @Autowired
     public FilmController(InMemoryFilmStorage inMemoryFilmStorage, FilmService filmService) {
@@ -80,7 +80,7 @@ public class FilmController {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public Map<String, String> handleWrongIdException(final WrongIdException e) {
-        return Map.of("объект с таким Id не найден", e.getMessage());
+        return Map.of("Объект с таким Id не найден", e.getMessage());
     }
 
     @ExceptionHandler

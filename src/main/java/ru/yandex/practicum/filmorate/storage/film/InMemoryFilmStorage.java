@@ -24,7 +24,7 @@ public class InMemoryFilmStorage implements FilmStorage {
                 films.put(film.getId(), film);
                 log.info("Размер фильмохранилища после обновления фильма: {}", films.size());
             } else {
-                log.error("Выброшено исключение WrongIdException");
+                log.error("Нет фильма с таким id: {}", film.getId());
                 throw new WrongIdException("Нет фильма с таким id");
             }
             return films.get(film.getId());

@@ -16,8 +16,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/users")
 public class UserController {
-    InMemoryUserStorage inMemoryUserStorage;
-    UserService userService;
+    private InMemoryUserStorage inMemoryUserStorage;
+    private UserService userService;
 
     public UserController(InMemoryUserStorage inMemoryUserStorage, UserService userService) {
         this.inMemoryUserStorage = inMemoryUserStorage;
@@ -45,7 +45,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     public User getUserFromId(@PathVariable long id) throws WrongIdException {
-        log.info("Запрос GET /users/{id} получен");
+        log.info("Запрос GET /users/{id} получен: {}", id);
         return inMemoryUserStorage.getUserFromId(id);
     }
 
@@ -78,7 +78,7 @@ public class UserController {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public Map<String, String> handleWrongIdException(final WrongIdException e) {
-        return Map.of("объект с таким Id не найден", e.getMessage());
+        return Map.of("Объект с таким Id не найден", e.getMessage());
     }
 
     @ExceptionHandler

@@ -50,7 +50,7 @@ public class InMemoryUserStorage implements UserStorage {
                 users.put(user.getId(), user);
                 log.info("Размер хранилища аккаунтов после обновления: {}", users.size());
             } else {
-                log.error("Выброшено исключение WrongIdException");
+                log.error("Нет пользователя с таким id: {}", user.getId());
                 throw new WrongIdException("Нет пользователя с таким id");
             }
             return users.get(user.getId());
