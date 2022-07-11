@@ -4,7 +4,7 @@ link to diagramm of database
 https://github.com/crank056/java-filmorate/blob/add_db_scheme/1.png
 examples of request to DB:
 ________________
--get user name:
+- get user name:
 SELECT name
 FROM user
 WHERE user_id = '1';
