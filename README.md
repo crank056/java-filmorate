@@ -1,7 +1,7 @@
 # java-filmorate
 Template repository for Filmorate project.
 link to diagramm of database
-https://github.com/crank056/java-filmorate/blob/add_db_scheme/1.png
+https://github.com/crank056/java-filmorate/blob/add_db_scheme/scheme.png
 examples of request to DB:
 ________________
 - get user name:
