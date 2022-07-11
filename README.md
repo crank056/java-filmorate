@@ -16,7 +16,7 @@ WHERE user_id = '1';
 SELECT is_confirmed
 FROM friends
 WHERE friend_id = '2' AND user_id = '1';
--get film genre
+- get film genre
 SELECT f.name AS film,
 g.name AS genre
 FROM film AS f
