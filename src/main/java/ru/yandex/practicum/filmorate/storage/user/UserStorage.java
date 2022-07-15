@@ -11,7 +11,7 @@ public interface UserStorage {
 
     boolean userDelete(User user);
 
-    User userRefresh(User user);
+    boolean userRefresh(User user);
 
     HashMap<Long, User> getAllUsers();
 

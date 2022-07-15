@@ -1,13 +1,14 @@
 package ru.yandex.practicum.filmorate.controllers;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.exceptions.WrongIdException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.UserService;
-import ru.yandex.practicum.filmorate.storage.user.InMemoryUserStorage;
+import ru.yandex.practicum.filmorate.storage.user.UserDbStorage;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -16,37 +17,37 @@ import java.util.Map;
 @RestController
 @RequestMapping("/users")
 public class UserController {
-    private InMemoryUserStorage inMemoryUserStorage;
+    private UserDbStorage userDbStorage;
     private UserService userService;
-
-    public UserController(InMemoryUserStorage inMemoryUserStorage, UserService userService) {
-        this.inMemoryUserStorage = inMemoryUserStorage;
+    @Autowired
+    public UserController(UserDbStorage userDbStorage, UserService userService) {
+        this.userDbStorage = userDbStorage;
         this.userService = userService;
     }
 
     @GetMapping
     public ArrayList<User> getAllUsers() {
         ArrayList<User> users = new ArrayList<>();
-        users.addAll(inMemoryUserStorage.getAllUsers().values());
+        users.addAll(userDbStorage.getAllUsers().values());
         return users;
     }
 
     @PutMapping
-    public User refreshUser(@RequestBody User user) throws ValidationException, WrongIdException {
+    public boolean refreshUser(@RequestBody User user) throws ValidationException, WrongIdException {
         log.info("Запрос PUT /users получен");
-        return inMemoryUserStorage.userRefresh(user);
+        return userDbStorage.userRefresh(user);
     }
 
     @PostMapping
     public User createUser(@RequestBody User user) throws ValidationException {
         log.info("Запрос POST /users получен");
-        return inMemoryUserStorage.userAdd(user);
+        return userDbStorage.userAdd(user);
     }
 
     @GetMapping("/{id}")
     public User getUserFromId(@PathVariable long id) throws WrongIdException {
         log.info("Запрос GET /users/{id} получен: {}", id);
-        return inMemoryUserStorage.getUserFromId(id);
+        return userDbStorage.getUserFromId(id);
     }
 
     @PutMapping("/{id}/friends/{friendId}")

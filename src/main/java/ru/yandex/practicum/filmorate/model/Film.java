@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -15,8 +17,57 @@ public class Film implements Comparable<Film> {
     private String description;
     private LocalDate releaseDate;
     private Integer duration;
-
     private long id;
+    private Set<String> genre = new TreeSet<>();
+    private Integer mpaRate;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public LocalDate getReleaseDate() {
+        return releaseDate;
+    }
+
+    public void setReleaseDate(LocalDate releaseDate) {
+        this.releaseDate = releaseDate;
+    }
+
+    public Integer getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Integer duration) {
+        this.duration = duration;
+    }
+
+    public Set<String> getGenre() {
+        return genre;
+    }
+
+    public void setGenre(Set<String> genre) {
+        this.genre = genre;
+    }
+
+    public Integer getMpaRate() {
+        return mpaRate;
+    }
+
+    public void setMpaRate(Integer mpaRate) {
+        this.mpaRate = mpaRate;
+    }
 
     public long getId() {
         return id;
@@ -37,6 +88,15 @@ public class Film implements Comparable<Film> {
     }
 
     private Set<Long> likes = new TreeSet<>();
+
+    public Film(String name, String description, LocalDate releaseDate, Integer duration, long id, int mpaRate) {
+        this.name = name;
+        this.description = description;
+        this.releaseDate = releaseDate;
+        this.duration = duration;
+        this.id = id;
+        this.mpaRate = mpaRate;
+    }
 
     public boolean isValid() {
         boolean isValid = true;
@@ -62,11 +122,13 @@ public class Film implements Comparable<Film> {
     public Film(@JsonProperty("name") String name,
                 @JsonProperty("descriprion") String description,
                 @JsonProperty("releaseDate") LocalDate releaseDate,
-                @JsonProperty("duration") Integer duration) {
+                @JsonProperty("duration") Integer duration,
+                @JsonProperty("mpaRate") Integer mpaRate) {
         this.name = name;
         this.description = description;
         this.releaseDate = releaseDate;
         this.duration = duration;
+        this.mpaRate = mpaRate;
     }
 
     @Override

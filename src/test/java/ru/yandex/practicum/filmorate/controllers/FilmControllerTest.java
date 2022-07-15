@@ -14,7 +14,7 @@ public class FilmControllerTest {
     @BeforeEach
     public void setController() {
         film = new Film( "TestFilm", "TestFilmDescription",
-                LocalDate.of(2020, 12, 30), 150);
+                LocalDate.of(2020, 12, 30), 150, 1);
     }
 
     @Test

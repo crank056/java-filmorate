@@ -17,7 +17,7 @@ public class InMemoryFilmStorage implements FilmStorage {
 
     @SneakyThrows
     @Override
-    public Film filmRefresh(Film film) {
+    public boolean filmRefresh(Film film) {
         if (film.isValid()) {
             if (films.containsKey(film.getId())) {
                 log.info("Размер фильмохранилища до обновления фильма: {}", films.size());
@@ -27,7 +27,7 @@ public class InMemoryFilmStorage implements FilmStorage {
                 log.error("Нет фильма с таким id: {}", film.getId());
                 throw new WrongIdException("Нет фильма с таким id");
             }
-            return films.get(film.getId());
+            return films.containsKey(film.getId());
         } else {
             log.error("Выброшено исключение ValidationException");
             throw new ValidationException("Неверный формат фильма!");

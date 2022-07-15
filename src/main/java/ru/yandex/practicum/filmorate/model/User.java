@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -24,6 +25,14 @@ public class User {
 
     public Set<Long> getFriends() {
         return friends;
+    }
+
+    public User(long id, String email, String login, String name, LocalDate birthday) {
+        this.id = id;
+        this.email = email;
+        this.login = login;
+        this.name = name;
+        this.birthday = birthday;
     }
 
     public User(@JsonProperty("email") String email,
@@ -60,4 +69,5 @@ public class User {
     public void setId(long id) {
         this.id = id;
     }
+
 }

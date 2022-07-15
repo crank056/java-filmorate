@@ -11,7 +11,7 @@ public interface FilmStorage {
 
     boolean filmDelete(Film film);
 
-    Film filmRefresh(Film film);
+    boolean filmRefresh(Film film);
 
     HashMap<Long, Film> getAllFilms();
 

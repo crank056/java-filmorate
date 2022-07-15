@@ -41,7 +41,7 @@ public class InMemoryUserStorage implements UserStorage {
 
     @SneakyThrows
     @Override
-    public User userRefresh(User user) {
+    public boolean userRefresh(User user) {
         if (user.isValid()) {
             if (user.getName() == "") user.setName(user.getLogin());
             log.info(user.getName());
@@ -53,7 +53,7 @@ public class InMemoryUserStorage implements UserStorage {
                 log.error("Нет пользователя с таким id: {}", user.getId());
                 throw new WrongIdException("Нет пользователя с таким id");
             }
-            return users.get(user.getId());
+            return users.containsKey(user.getId());
         } else {
             log.error("Выброшено исключение ValidationException");
             throw new ValidationException("Неверный формат пользователя!");

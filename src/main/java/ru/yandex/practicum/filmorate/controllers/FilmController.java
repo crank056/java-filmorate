@@ -8,6 +8,7 @@ import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.exceptions.WrongIdException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
+import ru.yandex.practicum.filmorate.storage.film.FilmDbStorage;
 import ru.yandex.practicum.filmorate.storage.film.InMemoryFilmStorage;
 
 import java.util.ArrayList;
@@ -17,43 +18,43 @@ import java.util.Map;
 @RestController
 @RequestMapping("/films")
 public class FilmController {
-    private InMemoryFilmStorage inMemoryFilmStorage;
+    private FilmDbStorage filmDbStorage;
     private FilmService filmService;
 
     @Autowired
-    public FilmController(InMemoryFilmStorage inMemoryFilmStorage, FilmService filmService) {
-        this.inMemoryFilmStorage = inMemoryFilmStorage;
+    public FilmController(FilmDbStorage filmDbStorage, FilmService filmService) {
+        this.filmDbStorage = filmDbStorage;
         this.filmService = filmService;
     }
 
     @GetMapping
     public ArrayList<Film> getAllFilms() {
         ArrayList<Film> films = new ArrayList<>();
-        films.addAll(inMemoryFilmStorage.getAllFilms().values());
+        films.addAll(filmDbStorage.getAllFilms().values());
         return films;
     }
 
     @PutMapping
-    public Film refreshFilm(@RequestBody Film film) {
+    public boolean refreshFilm(@RequestBody Film film) {
         log.info("Запрос PUT /films получен");
-        return inMemoryFilmStorage.filmRefresh(film);
+        return filmDbStorage.filmRefresh(film);
     }
 
     @PostMapping
     public Film createFilm(@RequestBody Film film) throws ValidationException {
         log.info("Запрос POST /films получен");
-        return inMemoryFilmStorage.filmAdd(film);
+        return filmDbStorage.filmAdd(film);
     }
 
     @DeleteMapping
     public boolean deleteFilm(@RequestBody Film film) {
         log.info("Запрос DELETE /films получен");
-        return inMemoryFilmStorage.filmDelete(film);
+        return filmDbStorage.filmDelete(film);
     }
 
     @GetMapping("/{id}")
     public Film getFilmFromId(@PathVariable long id) throws WrongIdException {
-        return inMemoryFilmStorage.getFilmFromId(id);
+        return filmDbStorage.getFilmFromId(id);
     }
 
     @PutMapping("/{id}/like/{userId}")
